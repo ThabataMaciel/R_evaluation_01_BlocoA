@@ -161,40 +161,10 @@ boxplot(Salary~NewLeague, data=df, main="Boxplot of salaries by League")
 boxplot(Salary~Division, data=df, main="Boxplot of salaries by Division")
 
 # Quais variáveis quantitativas apresentam maior correlação com o salário?
-panel.pearson <- function(x, y, ...) {
-  horizontal <- (par("usr")[1] + par("usr")[2]) / 2; 
-  vertical <- (par("usr")[3] + par("usr")[4]) / 2; 
-  text(horizontal, vertical, format(abs(cor(x,y)), digits=2)) 
-}
-pairs(df, main="Corr Matrix", pch=21, upper.panel=panel.pearson)
-
 library(corrplot)
-
-# Gerando a matriz de correla??es.
-iriscor <- cor(df_quant)
-
-# Arredondando para duas casas decimais.
-round(iriscor, digits=2)
-
-# Visualiza??o da matriz de correla??es 1.
-corrplot(iriscor)
-
-corrplot(cor(iris[,1:4]))
-corrplot(cor(iris[,1:4])[1:4,1, drop=FALSE], cl.pos='n')
-
-df_quant <- na.omit(df[,sapply(df,is.numeric)])
-
-plot(df$CAtBat, df$Salary)
-points(df$Salary, df$Hits)
-
-help(pairs)
-
 library(reshape2)
-foo <- df_quant
-foo <- melt(foo, "Salary")
 library(ggplot2)
-ggplot(foo) +  geom_point(aes(value, Salary)) + facet_wrap(~variable, ncol=4, scales="free_x", as.table = TRUE)
-help(ggplot)
-help(facet_grid)
+df_quant <- na.omit(df[,sapply(df,is.numeric)])
+foo <- melt(df_quant, "Salary")
 
-class(.~variable)
+ggplot(foo) +  geom_point(aes(value, Salary)) + facet_wrap(~variable, ncol=4, scales="free_x", as.table = TRUE)
